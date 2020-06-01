@@ -1,2 +1,2 @@
 # fullstack-june-2020
-Course materials 
+The course materials for the training will be uploaded on this repository
