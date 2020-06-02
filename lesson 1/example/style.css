@@ -129,3 +129,12 @@ html, body {
   footer {
     margin-top: 10px;
   }
+
+  .red_paragraph {
+    color: red;
+  }
+
+  #unique_paragraph {
+    font-size: 25px;
+  }
+
