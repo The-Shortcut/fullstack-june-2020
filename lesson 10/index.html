@@ -1,0 +1,141 @@
+<!-- HTML DOM Examples
+<html>
+    <head></head> 
+    <body>
+       <div>Begin</div> 
+       <ul>
+           <li>Information</li>
+       </ul>
+       <div>End</div>
+    </body>
+    <script>
+        // document.body.style.background = "red"
+        // setTimeout(() => document.body.style.background = "", 1000)
+        // for (let i = 0; i < document.body.childNodes.length; i++) {
+        //     console.log(document.body.childNodes[i])
+        // }
+
+        console.log(document.body.previousElementSibling)
+        let lastDiv = document.body.lastElementChild
+        console.log(lastDiv)
+    </script>
+</html> -->
+
+<!-- HTML DOM exercise -->
+<!-- Log the first names from the following HTML doc on the console
+Log name of all the nodes inside the HTML body in lowercase on the console -->
+<!-- 
+<html>
+<body>
+  <ul> First Names
+    <li>John</li>
+    <li>Pete</li>
+    <li>Anne</li>
+    <li>Mary</li>
+  </ul>
+  <ul> Last Names
+    <li>Walker</li>
+    <li>Smith</li>
+    <li>Badan</li>
+    <li>Anne</li>
+  </ul>
+</body>
+<script>
+    let firstList = document.body.firstElementChild.textContent
+    for (let text of firstList) {
+        console.log(firstList)
+    }
+
+    for (let node of document.body.childNodes) {
+        console.log(node.nodeName.toLowerCase())
+    }
+</script>
+</html> -->
+
+<!-- <ul>
+    <li>The</li>
+    <li>test</li>
+</ul>
+<ul>
+    <li>has</li>
+    <li>passed</li>
+</ul>
+
+<script>
+    let elements = document.querySelectorAll('ul > li:last-child')
+
+    for(let elem of elements) {
+        console.log(elem.innerHTML)
+    }
+</script> -->
+
+<!-- <body>
+    Hello
+    < Comment -->
+    <!-- <script>
+        let text = document.body.firstChild
+        console.log(text.data)
+
+        let comment = text.nextSibling
+        console.log(comment.data)
+    </script>
+</body> --> 
+
+<!-- <div>Both divs below are hidden</div>
+<div hidden>WIll be hidden by default</div>
+<div id="elem">Use script to assign hidden property</div>
+
+<script>
+    // elem.hidden = true
+    setInterval(() => {
+        elem.hidden = !elem.hidden
+    }, 1000);
+</script> -->
+
+<!-- Exercise 2 -->
+
+<!-- Change the body style so it has a font-family of "Arial, sans-serif". -->
+<!-- Replace each of the spans (nickname, favorites, hometown) with your own information. -->
+<!-- Iterate through each li and change the class to "listitem". Add a style tag that sets a rule for "listitem" to make the color red 
+- Do this manually by editing original HTML. -->
+<!-- Use setinterval() to and to toggle hidden attribute for My Page in the bottom every 1 second -->
+
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>About Me</title>
+</head>
+<style>
+    .listitem {
+        color: red
+    }
+</style>
+<body>
+  <h1>About Me</h1>
+  <ul>
+    <li>Nickname: <span id="nickname"></span>
+    <li>Favorites:  <span id="favorites"></span>
+    <li>Hometown: <span id="hometown"></span>
+    </ul>
+   <aside>
+    <h1>My page</h1>
+   </aside>
+ </body>
+ <script>
+     document.body.style.fontFamily = "Arial, sans-serif"
+     document.querySelector("#nickname").innerHTML = "Mojo"
+     document.querySelector("#favorites").innerHTML = "Summer"
+     document.querySelector("#hometown").innerHTML = "Mymensingh"
+
+     let listItems = document.querySelectorAll('li')
+     for (let lisitem of listItems) {
+         lisitem.className = "listitem"
+     }
+
+     let blinkinText = document.querySelector('aside > h1')
+     setInterval(() => {
+         blinkinText.hidden = !blinkinText.hidden
+     }, 1000);
+ </script>
+</html>
