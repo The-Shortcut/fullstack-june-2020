@@ -27,8 +27,27 @@
 
 
   <script>
-      // Write your script here
+    // Write a script that will add a button
+    //  with the class=”remove-button” to remove the <div id=”pane”> and value of [X]
+    let panes = document.querySelectorAll('.pane')
+    for (let pane of panes) {
+      pane.insertAdjacentHTML("afterbegin", "<button class='remove-button'>[X]</button>")
+      pane.firstChild.onclick = () => pane.remove()
+    }
   </script>
+
+  <!-- Nivedita's solution
+  <script>
+    let btn = document.createElement("BUTTON")
+    btn.className = "remove-button"
+    btn.innerHTML = "X"
+    document.body.appendChild(btn)
+    document.querySelector(".remove-button").onclick = () => {
+    for(let pane of document.querySelectorAll(".pane")){
+      pane.hidden = true
+    }
+  }
+</script> -->
 
 </body>
 </html>

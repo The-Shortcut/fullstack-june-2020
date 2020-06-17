@@ -1,0 +1,110 @@
+<!-- <input type="button" value="Click me" onclick="alert('Click')"> -->
+
+<!-- <script>
+     function countRabbits () {
+          for (let i = 0; i <=3; i++) {
+               alert("Rabbit count " + i)
+          }
+     }
+</script>
+
+<input type="button" value="Count rabbits" onclick="countRabbits()"> -->
+
+<!-- <input type="button" id="elem" value="Click me">
+<script>
+     elem.onclick = function () {
+          alert("Has been clicked")
+     }
+</script> -->
+
+<!-- <button onclick="alert(this.innerHTML)">Click Me</button> -->
+
+<!-- Possible mistakes -->
+<!-- function sayThanks () {
+     alert("Thanks")
+}
+
+elem.onclick = sayThanks() // Won't work
+elem.onclick = sayThanks // THis is the correct way -->
+
+<!-- Add event listener examples -->
+<!-- <input type="button" value="Click me" id="elem">
+
+<script>
+     function handler1() {
+          alert("First event")
+     }
+
+     function handler2 () {
+          alert("Second event")
+     }
+
+     elem.onclick = () => alert("Hello")
+     elem.addEventListener("click", handler1)
+     elem.addEventListener("click", handler2)
+</script> -->
+
+<!-- Exercise 1 -->
+<!-- Create an HTML document with a button and  a div with id=”text” 
+Add a script on the button which on click will hide the <div id=”text”> -->
+
+<!-- <input type="button" id="hider" value="Click to hide text">
+<div id="text">Text</div>
+
+<script>
+     document.querySelector("#hider").onclick = () => {
+          document.querySelector("#text").hidden = true
+     }
+</script> -->
+
+<!-- Bubbling examples -->
+<!-- <style>
+     body * {
+          margin: 10px;
+          border: 1px solid red;
+     }
+</style>
+
+<form onclick="alert('form')">FORM
+     <div onclick="alert('div')">DIV
+          <p onclick="alert('p')">P</p>
+     </div>
+</form> -->
+
+<!-- Dispatch events example -->
+<!-- <button id="elem" onclick="alert('Click!')">Autoclick</button>
+<script>
+     let event = new Event("click")
+     elem.dispatchEvent(event)
+</script> -->
+
+<!-- Exercise 3 solution -->
+<!-- Write the script which adds an event listener
+ to the button which will run makeMadLib function when clicked
+The function will retrieve values from the form input elements in the 
+given HTML document and make a story from them
+The output will be shown on <div id=”story”> and will look like for 
+     example “Pete codes crazily with Javascript which is cool!” -->
+<body>
+     <h1>Mad Libs</h1>
+     <ul>
+      <li>Programming language: <input type="text" id="noun">
+      <li>Adjective: <input type="text" id="adjective">
+      <li>Someone's Name: <input type="text" id="person">
+     </ul>
+     <button id="lib-button">Lib it!</button>
+     <div id="story"></div>
+     <script>
+       makeMadLib = () => {
+            let storyDiv = document.querySelector("#story")
+            let person = document.querySelector("#person").value
+            let adjective = document.querySelector("#adjective").value
+            let noun = document.querySelector("#noun").value
+
+            storyDiv.innerHTML = `${person} codes ${adjective} with ${noun} which is cool!`
+       }
+       let libButton = document.querySelector("#lib-button")
+       libButton.addEventListener('click', makeMadLib)
+    </script>
+</body>
+    
