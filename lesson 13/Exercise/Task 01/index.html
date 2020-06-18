@@ -31,6 +31,20 @@
   </ul>
   <script>
       // Your script goes here
+      showThumbnail = (href, title) => {
+        largeImg.src = href
+        largeImg.title = title
+      }
+
+      thumbs.onclick = (event) => {
+        let thumbnail = event.target.closest('a')
+
+        if(!thumbnail) return
+        showThumbnail(thumbnail.href, thumbnail.title)
+        event.preventDefault()
+      }
+
+
   </script>
 </body>
 </html>

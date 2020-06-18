@@ -1,0 +1,38 @@
+<!-- Event delegation example -->
+<!-- Counter: <input type="button" value="1" data-counter>
+Second counter: <input type="button" value="2" data-counter>
+Third counter: <input type="text" value="2" data-counter>
+
+<script>
+  document.addEventListener('click', function(event) {
+    if (event.target.dataset.counter != undefined) {
+      event.target.value++
+    }
+  })
+</script> -->
+<!-- 
+<button data-toggle-id="subscribe-mail">Show the subscription form</button>
+
+<form id="subscribe-mail" hidden>
+  Your mail: <input type="email">
+</form>
+
+<script>
+  document.addEventListener('click', function(event) {
+    let id = event.target.dataset.toggleId
+    if(!id) return
+
+    let elem = document.getElementById(id)
+    elem.hidden = !elem.hidden
+  })
+</script> -->
+
+<!-- popup example -->
+<body>
+  <button id="button">Click to open page</button>
+</body>
+<script>
+  button.onclick = () => {
+    window.open('https://www.google.com', 'test widnow', `width = 800, height = 400` )
+  }
+</script>

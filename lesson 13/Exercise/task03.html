@@ -81,8 +81,31 @@
 
     let form = document.forms.calculator;
 
-    // your code
-    
+    // your code let result = Math.round(initial * (1 + interest * years))
+    function calculate() {
+      initial = +form.money.value
+      if(!initial) return
+      
+      let interest = form.interest.value * 0.01
+      if(!interest) return
+      
+      let years = form.months.value / 12
+      if(!years) return
+
+      let result = Math.round(initial * (1 + interest * years))
+
+      let height = result / form.money.value * 100 + 'px'
+      document.querySelector("#height-after").style.height = height
+      document.querySelector("#money-before").innerHTML = form.money.value
+      document.querySelector("#money-after").innerHTML = result
+
+    }
+
+    form.money.oninput = calculate
+    form.months.onchange = calculate
+    form.interest.oninput = calculate
+
+    calculate()
   </script>
 
 
