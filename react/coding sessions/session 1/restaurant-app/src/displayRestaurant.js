@@ -1,10 +1,11 @@
 import React from "react";
-import restaurants from "./restaurants";
+
 
 const DisplayRestaurant = (props) => {
+  console.log('restaurants from display component ', props.restaurantList.businesses)
   return (
     <div className="container">
-      {props.restaurantList.map((restaurant, key) => {
+      {props.restaurantList.businesses.map((restaurant, key) => {
         return (
           <div key={key} className="restaurant">
           <a href={restaurant.url} target="blank">
