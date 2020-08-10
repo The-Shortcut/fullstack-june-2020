@@ -7,31 +7,6 @@
   pointer-events: none;
 }
 
-.restaurant img{
-  width: 300px;
-  height:300px;
-}
-.restaurantName{
-  font-weight: bold;
-}
-.restaurant{
-  border: 2px solid black;
-  width: 400px;
-  height: 400px;
-  padding: 10px;
-  margin: 20px;
-  text-align: center;
-}
-h1 {
-  text-align: center;
-}
-.container{
-  display: flex;
-  flex-wrap:wrap;
-}
-.Main-container{
-  text-align: center;
-}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -52,7 +27,40 @@ h1 {
 .App-link {
   color: #61dafb;
 }
-
+input{
+  margin: 20px;
+  padding: 10px;
+  width: 300px;
+  border: 2px solid black;
+}
+.restaurants {
+  display: flex;
+  margin: 20px;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.cards {
+  border: 2px solid black;
+  padding: 10px;
+  margin: 10px;
+  width:300px;
+  height: 300px;
+  text-align: center;
+  align-items: flex-start;
+ 
+}
+h1 {
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+}
+.restaurant{
+  font-weight: bold;
+}
+.restaurants img {
+  width:200px;
+  height: 200px;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -60,4 +68,30 @@ h1 {
   to {
     transform: rotate(360deg);
   }
+}
+
+.nav-bar{
+  min-width: 100%;
+  background-color: #0d86cb;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color:white;
+  position: sticky;
+  top: 0;
+}
+.menu{
+  background-color: white;
+  min-width: 15%;
+  min-height: 100vh;
+  z-index: 10;
+  color: #0d86cb;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.fa-heart{
+  float: left;
+  cursor: pointer;
 }

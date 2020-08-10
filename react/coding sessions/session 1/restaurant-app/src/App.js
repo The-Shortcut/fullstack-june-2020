@@ -1,9 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import "./App.css";
 
-import DisplayRestaurant from "./displayRestaurant";
+import DisplayRestaurant from "./components/DisplayRestaurant";
+import Navbar from "./components/Navbar";
+import Search from "./components/Search";
+
 const App = () => {
   const [restaurantList, setRestaurantList] = useState({ businesses: [] });
   const [search, setSearch] = useState("restaurants");
@@ -12,6 +16,7 @@ const App = () => {
     const response = await axios.get(url);
     console.log("url is ", url);
     console.log("response is ", response.data);
+    // response.data.businesses.forEach( res => Object.assign(res,{favarite: false}))
     setRestaurantList(response.data);
   };
 
@@ -19,13 +24,13 @@ const App = () => {
     fetchingData();
   }, [search]);
 
-  let sortedRestaurants = "";
+  let sortedRestaurants = null;
 
   const handleClick = () => {
     sortedRestaurants = restaurantList.businesses.sort((a, b) => {
       return b.rating - a.rating;
     });
-    setRestaurantList([...sortedRestaurants]);
+    setRestaurantList({businesses:[...sortedRestaurants]});
     console.log("result is ", sortedRestaurants);
   };
 
@@ -34,7 +39,7 @@ const App = () => {
     console.log("button clicked");
 
     const newSearch = document.getElementById("addSearch");
-    if (newSearch.value != "") {
+    if (newSearch.value !== "") {
       console.log("data from newSearch is ", newSearch.value);
       setSearch(newSearch.value);
     }
@@ -42,17 +47,7 @@ const App = () => {
 
   return (
     <div className="Main-container">
-      <h1>List of restaurants</h1>
-      <button onClick={() => handleClick()}>Sort by stars</button>
-      <form className="form" id="addItemForm">
-        <input
-          type="text"
-          className="input"
-          id="addSearch"
-          placeholder="Search Something..."
-        />
-        <button onClick={searchRestaurants}>Search</button>
-      </form>
+      <Navbar searchRestaurants={searchRestaurants} />
       {restaurantList && <DisplayRestaurant restaurantList={restaurantList} />}
     </div>
   );
