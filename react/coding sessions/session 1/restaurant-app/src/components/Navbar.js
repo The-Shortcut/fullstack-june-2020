@@ -1,20 +1,29 @@
 import React,{ useState } from 'react'
 import Search from './Search'
 
-const Navbar = ({ searchRestaurants }) => {
+const Navbar = ({ searchRestaurants, setFavorite }) => {
     const [openMenu, setOpenMenu] = useState(false)
 
     const toggleMenu = () => {
         setOpenMenu(!openMenu)
     }
-    console.log(openMenu)
+    
+    const getAll = () => {
+        console.log('all')
+        setFavorite(false)
+    }
+
+    const getFav = () => {
+        console.log('favorites')
+        setFavorite(true)
+    }
     return (
         <div className="nav-bar">
             {openMenu ?
             <div onClick={toggleMenu} className="menu">
             <ul>
-                <li>all</li>
-                <li>favorites</li>
+                <li onClick={getAll}><i style={{margin:'10px'}} className="fas fa-utensils"></i>all</li>
+                <li onClick={getFav}><i style={{margin:'10px'}} className="fab fa-gratipay"></i>favorites</li>
             </ul>
             </div>
             : 

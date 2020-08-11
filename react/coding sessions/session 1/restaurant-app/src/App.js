@@ -6,33 +6,50 @@ import "./App.css";
 
 import DisplayRestaurant from "./components/DisplayRestaurant";
 import Navbar from "./components/Navbar";
-import Search from "./components/Search";
 
 const App = () => {
   const [restaurantList, setRestaurantList] = useState({ businesses: [] });
   const [search, setSearch] = useState("restaurants");
+  const [favorite, setFavorite] = useState(false)
+  const [ isLoading, setisLoading] = useState(false)
+
   const fetchingData = async () => {
+    setisLoading(true)
     const url = `https://famua0f1ql.execute-api.eu-central-1.amazonaws.com/dev/restaurants?searchTerm=${search}&location=helsinki`;
     const response = await axios.get(url);
-    console.log("url is ", url);
-    console.log("response is ", response.data);
-    // response.data.businesses.forEach( res => Object.assign(res,{favarite: false}))
+    // console.log("url is ", url);
+    // console.log("response is ", response.data);
+    response.data.businesses.forEach( res => Object.assign(res,{favorite: false}))
     setRestaurantList(response.data);
+    setisLoading(false)
   };
 
   useEffect(() => {
-    fetchingData();
+    // get data from localStorage
+    let restaurantData = localStorage.getItem('restaurantList')
+    // convert it from JSON file
+    restaurantData = JSON.parse(restaurantData)
+    console.log('data from localstorage',restaurantData)
+
+    if(restaurantData !== null){
+      setRestaurantList({ businesses: [...restaurantData]})
+    }else{
+      fetchingData();
+    }
   }, [search]);
 
-  let sortedRestaurants = null;
+
+  // filter out the items its favorite is true
+  const favoriteList = restaurantList.businesses.filter( restaurant => restaurant.favorite === true)
 
   const handleClick = () => {
-    sortedRestaurants = restaurantList.businesses.sort((a, b) => {
+    let sortedRestaurants = restaurantList.businesses.sort((a, b) => {
       return b.rating - a.rating;
     });
     setRestaurantList({businesses:[...sortedRestaurants]});
     console.log("result is ", sortedRestaurants);
   };
+
 
   const searchRestaurants = (e) => {
     e.preventDefault();
@@ -45,10 +62,21 @@ const App = () => {
     }
   };
 
+  // console.log(restaurantList)
+  // console.log(favorite)
+
   return (
     <div className="Main-container">
-      <Navbar searchRestaurants={searchRestaurants} />
-      {restaurantList && <DisplayRestaurant restaurantList={restaurantList} />}
+      <Navbar searchRestaurants={searchRestaurants} setFavorite={setFavorite} />
+
+      {/* try to use the spinner when data takes time to load */}
+      {isLoading && <div className="loader">Loading...</div>}
+
+      {restaurantList && 
+      <DisplayRestaurant 
+        // send favoriteList as a props to this component when the favorite state is true
+        restaurantList={favorite ? favoriteList : restaurantList.businesses} 
+      />}
     </div>
   );
 };
