@@ -15,6 +15,63 @@
 </body>
 <script>
   // Your code goes here
+  const ul = document.getElementById('authors')
+  const url = 'https://randomuser.me/api/?results=10'
+
+  // The data we are going to send in our request
+  let data = {
+    name: 'Sara'
+  }
+
+  // Create our request constructor with all parameters
+  let request = new Request(url, {
+    method: 'POST',
+    body: data, 
+    headers: new Headers()
+  })
+  // The parameters we are going to pass to the fetch function
+  let fetchData = {
+    method: 'POST',
+    body: data, 
+    headers: new Headers()
+  }
+
+  fetch(url, fetchData) 
+    .then(function(){
+      // Handle response you get from the server
+    })
+
+  function createNode(element) {
+    //Create the type of element and pass in the parameters
+    return document.createElement(element)
+  }
+
+  function append(parent, el) {
+    // Append the second parameter(element) to the first one
+    return parent.appendChild(el)
+  }
+
+  fetch(url)
+    .then((resp) => resp.json()) //Transform the data into json
+    .then(function(data) {
+      // Create and append the li items to the ul
+      let authors = data.results // Get the results
+      // Map through the results and for each run some codes
+      return authors.map(function(author) {
+        let li = createNode('li') // Create the elements we need
+            img = createNode('img')
+            span = createNode('span')
+            img.src = author.picture.medium // Add the source of the image to be the src of the img element
+            span.innerHTML = `${author.name.first} ${author.name.last}`   // Make the HTML of our span to be the first and last name
+            append(li, img)// APpend all our elements
+            append(li, span)
+            append(ul, li)
+
+      })      
+    })
+    .catch(function(error){
+      console.log(error)
+    })
 
 </script>
 
