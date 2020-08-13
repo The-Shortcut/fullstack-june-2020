@@ -15,7 +15,8 @@ const App = () => {
 
   const fetchingData = async () => {
     setisLoading(true)
-    const url = `https://famua0f1ql.execute-api.eu-central-1.amazonaws.com/dev/restaurants?searchTerm=${search}&location=helsinki`;
+    //const url = `https://famua0f1ql.execute-api.eu-central-1.amazonaws.com/dev/restaurants?searchTerm=${search}&location=helsinki`;
+    const url =`http://localhost:3001/restaurants?searchTerm=${search}&location=helsinki`
     const response = await axios.get(url);
     // console.log("url is ", url);
     // console.log("response is ", response.data);
