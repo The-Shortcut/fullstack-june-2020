@@ -8,7 +8,7 @@
   color: #171212
 }
 
-.headline-primary {
+.headlinePrimary {
   font-size: 45px;
   font-weight: 300;
   letter-spacing: 2px;
@@ -43,15 +43,15 @@
   color: #ffffff;
 }
 
-.button_small {
+.buttonSmall {
   padding: 5px;
 }
 
-.button_large {
+.buttonLarge {
   padding: 10px;
 }
 
-.search-form {
+.searchForm {
   padding: 10px 0 20px 0;
   display: flex;
   align-items: baseline;

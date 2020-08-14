@@ -3,9 +3,6 @@ import axios from 'axios'
 
 import styled from 'styled-components'
 
-import { ReactComponent as Check} from './check.svg'
-
-
 // import styles from './App.module.css'
 // import cs from 'classnames'
 
@@ -49,64 +46,6 @@ const StyledHeadlinePrimary = styled.h1`
 font-size: 45px;
 font-weight: 300;
 letter-spacing: 2px;
-`
-
-const StyledItem = styled.div`
-  display: flex;
-  align-items: center;
-  padding-bottom: 5px;
-`
-const StyledColumn = styled.span`
-  padding: 0 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  a {
-  color: inherit;
-  }
-
-  width: ${props => props.width}
-`
-
-const StyledButton = styled.button`
-  background: transparent;
-  border: 1px solid #171212;
-  padding: 5px;
-  transition: all 0.1s ease-in;
-
-  &:hover >svg > g {
-  fill: #ffffff;
-  stroke: #ffffff;
-  }
-`
-
-const StyledButtonSmall = styled(StyledButton)`
-  padding: 5px;
-`
-
-const StyledButtonLarge = styled(StyledButton)`
-  padding: 10px;
-`
-
-const StyledSearchForm = styled.form`
-  padding: 10px 0 20px 0;
-  display: flex;
-  align-items: baseline;
-`
-
-const StyledLabel = styled.label`
-  border-top: 1px solid #171212;
-  border-bottom-style: 1px solid #171212;
-  padding-left: 5px;
-  font-size: 24px;
-`
-
-const StyledInput = styled.input`
-  border: none;
-  border-bottom: 1px solid #171212;
-  background-color: transparent;
-  font-size: 24px;
 `
 
 // Function for app 
@@ -233,8 +172,8 @@ const App = () => {
   }
 
   return (
-    <StyledContainer>
-      <StyledHeadlinePrimary>My Hacker Stories</StyledHeadlinePrimary>
+    <div className={styles.container}>
+      <h1 className={styles.headlinePrimary}>My Hacker Stories</h1>
 
       <SearchForm
         searchTerm = {searchTerm}  
@@ -252,7 +191,7 @@ const App = () => {
           onRemoveItem={handleRemoveStory}
         />
       )}
-    </StyledContainer>
+    </div>
   );
 };
 
@@ -274,14 +213,16 @@ const InputWithLabel = ({
 
   return (
     <>
-      <StyledLabel htmlFor={id}>{children}</StyledLabel> 
+      <label htmlFor={id} className={styles.label}>{children}</label> 
       &nbsp;
-      <StyledInput
+      <input
         ref={inputRef}
         id={id}
         type={type}
         value={value}
         onChange={onInputChange}
+
+        className={styles.input}
       />
     </>
   );
@@ -297,22 +238,23 @@ const List = ({ list, onRemoveItem }) =>
   ));
 
 const Item = ({ item, onRemoveItem }) => (
-  <StyledItem>
-    <StyledColumn width="40%">
+  <div className={styles.item}>
+    <span style={{ width: '40%'}}>
       <a href={item.url}>{item.title}</a>
-    </StyledColumn>
-    <StyledColumn width="30%">{item.author}</StyledColumn>
-    <StyledColumn width="10%">{item.num_comments}</StyledColumn>
-    <StyledColumn width="10%">{item.points}</StyledColumn>
-    <StyledColumn width="10%">
+    </span>
+    <span style={{ width: '30%'}}>{item.author}</span>
+    <span style={{ width: '10%'}}>{item.num_comments}</span>
+    <span style={{ width: '10%'}}>{item.points}</span>
+    <span style={{ width: '10%'}}>
       <button 
         type="button" 
         onClick={() => onRemoveItem(item)}
+        className={`${styles.button} ${styles.buttonSmall}`}
         >
-          <Check height="18px" width="18px" />
+        Dismiss
       </button>
-    </StyledColumn>
-  </StyledItem>
+    </span>
+  </div>
 );
 
 const SearchForm = ({
@@ -320,7 +262,7 @@ const SearchForm = ({
   onSearchInput,
   onSearchSubmit
 }) => (
-  <StyledSearchForm onSubmit={onSearchSubmit}>
+  <form onSubmit={onSearchSubmit} className={styles.searchForm}>
     <InputWithLabel
       id="search"
       value={searchTerm}
@@ -330,13 +272,14 @@ const SearchForm = ({
       <strong>Search:</strong>
     </InputWithLabel>
 
-    <StyledButtonLarge
+    <button
       type="submit"
       disabled={!searchTerm}
+      className = {cs(styles.button, styles.buttonLarge)}
     >
       Submit
-    </StyledButtonLarge>
-  </StyledSearchForm>
+    </button>
+  </form>
 )
 
 export default App;
