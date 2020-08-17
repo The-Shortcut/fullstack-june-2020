@@ -3,6 +3,9 @@ import axios from 'axios'
 
 import styled from 'styled-components'
 
+import searchTerm from './SearchForm'
+import List from "./List";
+
 import { ReactComponent as Check} from './check.svg'
 
 
@@ -256,87 +259,5 @@ const App = () => {
   );
 };
 
-const InputWithLabel = ({
-  id,
-  value,
-  type = 'text',
-  onInputChange,
-  isFocused,
-  children,
-}) => {
-  const inputRef = React.useRef();
-
-  React.useEffect(() => {
-    if (isFocused) {
-      inputRef.current.focus();
-    }
-  }, [isFocused]);
-
-  return (
-    <>
-      <StyledLabel htmlFor={id}>{children}</StyledLabel> 
-      &nbsp;
-      <StyledInput
-        ref={inputRef}
-        id={id}
-        type={type}
-        value={value}
-        onChange={onInputChange}
-      />
-    </>
-  );
-};
-
-const List = ({ list, onRemoveItem }) =>
-  list.map(item => (
-    <Item
-      key={item.objectID}
-      item={item}
-      onRemoveItem={onRemoveItem}
-    />
-  ));
-
-const Item = ({ item, onRemoveItem }) => (
-  <StyledItem>
-    <StyledColumn width="40%">
-      <a href={item.url}>{item.title}</a>
-    </StyledColumn>
-    <StyledColumn width="30%">{item.author}</StyledColumn>
-    <StyledColumn width="10%">{item.num_comments}</StyledColumn>
-    <StyledColumn width="10%">{item.points}</StyledColumn>
-    <StyledColumn width="10%">
-      <button 
-        type="button" 
-        onClick={() => onRemoveItem(item)}
-        >
-          <Check height="18px" width="18px" />
-      </button>
-    </StyledColumn>
-  </StyledItem>
-);
-
-const SearchForm = ({
-  searchTerm,
-  onSearchInput,
-  onSearchSubmit
-}) => (
-  <StyledSearchForm onSubmit={onSearchSubmit}>
-    <InputWithLabel
-      id="search"
-      value={searchTerm}
-      isFocused
-      onInputChange={onSearchInput}
-    >
-      <strong>Search:</strong>
-    </InputWithLabel>
-
-    <StyledButtonLarge
-      type="submit"
-      disabled={!searchTerm}
-    >
-      Submit
-    </StyledButtonLarge>
-  </StyledSearchForm>
-)
-
 export default App;
+export { storiesReducer, SearchForm, InputWithLabel, List, Item }
