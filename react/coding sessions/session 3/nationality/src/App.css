@@ -1,0 +1,79 @@
+
+.container{
+  margin: auto;
+  padding:10px;
+  background-color: #ffb515;
+  width:70vw;
+  height: 100vh;
+}
+
+.wrapper{
+  padding: 10px;
+  margin: 20px;
+  text-align: center;
+}
+hr{
+  width: 50vw;
+  height:1px;
+  border:none;
+  background-color: #781B2B;
+}
+h1{
+  text-align: center;
+  letter-spacing: 5px;
+  color: #FF08D7;
+  font-family: 'Dancing Script', cursive;
+}
+
+input{
+  margin-right:20px;
+  border: none;
+  border-bottom: 2px solid #ff5700;
+  background-color: transparent;
+  font-size: 24px;
+  outline: 0;
+  opacity: 1;
+  padding: 5px;
+}
+
+input[type="text"] {
+  outline: none;
+}
+
+button{
+  background-color: #ff5700;
+  color:white;
+  padding: 10px;
+  border:none;
+}
+
+button:active {
+  outline: none;
+  border:none;
+}
+
+button:hover {
+  cursor: pointer;
+  opacity: 0.7;
+  border:none;
+}
+
+.display-country{
+  text-align: center;
+  font-weight: 400;
+  font-size: large;
+}
+h3{
+  font-family: New Century Schoolbook, TeX Gyre Schola, serif;
+}
+
+.error{
+  color: #da4302;
+  font-weight: 400;
+  font-size: large;
+  font-style: italic;
+}
+
+.Result{
+  font-family: Courier New, monospace;
+}
