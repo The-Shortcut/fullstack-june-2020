@@ -1,4 +1,7 @@
 import React from 'react'
+import { StyledItem, StyledColumn } from './App'
+import { ReactComponent as Check} from './check.svg'
+
 
 const List = ({ list, onRemoveItem }) =>
   list.map(item => (

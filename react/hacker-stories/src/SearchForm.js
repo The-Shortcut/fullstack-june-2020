@@ -1,5 +1,6 @@
 import React from 'react'
 import InputWithLabel from './InputWithLabel'
+import { StyledSearchForm, StyledButtonLarge } from './App'
 
 const SearchForm = ({
     searchTerm,

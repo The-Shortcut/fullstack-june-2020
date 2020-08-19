@@ -3,11 +3,8 @@ import axios from 'axios'
 
 import styled from 'styled-components'
 
-import searchTerm from './SearchForm'
+import SearchForm from './SearchForm'
 import List from "./List";
-
-import { ReactComponent as Check} from './check.svg'
-
 
 // import styles from './App.module.css'
 // import cs from 'classnames'
@@ -260,4 +257,17 @@ const App = () => {
 };
 
 export default App;
-export { storiesReducer, SearchForm, InputWithLabel, List, Item }
+export { 
+  storiesReducer, 
+  List, 
+  StyledLabel, 
+  StyledButton,
+  StyledButtonLarge,
+  StyledButtonSmall,
+  StyledColumn,
+  StyledContainer,
+  StyledInput, 
+  StyledItem,
+  StyledHeadlinePrimary,
+  StyledSearchForm, 
+  }

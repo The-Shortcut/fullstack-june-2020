@@ -1,4 +1,5 @@
 import React from 'react'
+import { StyledLabel, StyledInput } from './App'
 
 const InputWithLabel = ({
     id,
