@@ -7,6 +7,10 @@ import {
 } from '@testing-library/react';
 import App, { storiesReducer, SearchForm, InputWithLabel, List, Item } from './App';
 
+import axios from 'axios'
+
+jest.mock('axios')
+
 const storyOne = {
     title: 'React',
     url: 'https://reactjs.org/',
@@ -94,46 +98,170 @@ const stories = [storyOne, storyTwo]
 //   })
 // })
 
-// SearchFrom component using InputWithLabel as child component
-describe('SearchForm', () => {
-  const searchFormProps = {
-    searchTerm: 'React',
-    onSearchInput: jest.fn(),
-    onSearchSubmit: jest.fn()
-  }
+// // SearchFrom component using InputWithLabel as child component
+// describe('SearchForm', () => {
+//   const searchFormProps = {
+//     searchTerm: 'React',
+//     onSearchInput: jest.fn(),
+//     onSearchSubmit: jest.fn()
+//   }
 
-  test('renders the input field with its value', () => {
-    render(<SearchForm {...searchFormProps} />)
+//   test('renders the input field with its value', () => {
+//     render(<SearchForm {...searchFormProps} />)
 
-    expect(screen.getByDisplayValue('React')).toBeInTheDocument()
-  })
+//     expect(screen.getByDisplayValue('React')).toBeInTheDocument()
+//   })
 
-  test('renders the correct label', () => {
-    render(<SearchForm {...searchFormProps } />)
+//   test('renders the correct label', () => {
+//     render(<SearchForm {...searchFormProps } />)
 
-    expect(screen.getByLabelText(/Search/)).toBeInTheDocument()
-  })
+//     expect(screen.getByLabelText(/Search/)).toBeInTheDocument()
+//   })
 
-  test('calls onSearchInput on the input field change', () => {
-    render(<SearchForm {...searchFormProps} />)
+//   test('calls onSearchInput on the input field change', () => {
+//     render(<SearchForm {...searchFormProps} />)
 
-    fireEvent.change(screen.getByDisplayValue('React'), {
-      target: {value: 'Redux'}
+//     fireEvent.change(screen.getByDisplayValue('React'), {
+//       target: {value: 'Redux'}
+//     })
+
+//     expect(searchFormProps.onSearchInput).toHaveBeenCalledTimes(1)
+//   })
+
+//   test('calls onSearchSubmit on button submit click', () => {
+//     render(<SearchForm {...searchFormProps} />)
+
+//     fireEvent.submit(screen.getByRole('button'))
+
+//     expect(searchFormProps.onSearchSubmit).toHaveBeenCalledTimes(1)
+//   })
+
+//   test('renders snapshot', () => {
+//     const { container } = render(<SearchForm {...searchFormProps} />)
+//     expect(container.firstChild).toMatchSnapshot()
+//   })
+// })
+
+describe('App', () => {
+  test('succeeds fetching data', async() => {
+    const promise = Promise.resolve({
+      data: {
+        hits: stories,
+      }
     })
 
-    expect(searchFormProps.onSearchInput).toHaveBeenCalledTimes(1)
+    axios.get.mockImplementationOnce(() => promise)
+
+    render(<App/>)
+
+    await act(() => promise)
+
+    expect(screen.queryByText(/Loading/)).toBeNull()
+
+    expect(screen.getByText('React')).toBeInTheDocument()
+    expect(screen.getByText('Redux')).toBeInTheDocument()
+    expect(screen.getAllByText('check.svg').length).toBe(2)
   })
 
-  test('calls onSearchSubmit on button submit click', () => {
-    render(<SearchForm {...searchFormProps} />)
+  test('fails fetching data', async () => {
+    const promise = Promise.reject()
 
-    fireEvent.submit(screen.getByRole('button'))
+    axios.get.mockImplementationOnce(() => promise)
 
-    expect(searchFormProps.onSearchSubmit).toHaveBeenCalledTimes(1)
+    render(<App />)
+
+    expect(screen.getByText(/Loading/)).toBeInTheDocument()
+
+    try {
+      await act(() => promise)
+        } catch (error) {
+      expect(screen.queryByText(/Loading/)).toBeNull()
+      expect(screen.queryByText(/went wrong/)).toBeInTheDocument()
+    }
   })
 
-  test('renders snapshot', () => {
-    const { container } = render(<SearchForm {...searchFormProps} />)
-    expect(container.firstChild).toMatchSnapshot()
+  test('removes a story', async() => {
+    const promise = Promise.resolve({
+      data: {
+        hits: stories,
+      }
+    })
+
+    axios.get.mockImplementationOnce(() => promise)
+
+    render(<App/>)
+
+    await act(() => promise)
+
+    expect(screen.getAllByText('check.svg').length).toBe(2)
+    expect(screen.getByText('Jordan Walke')).toBeInTheDocument()
+
+    fireEvent.click(screen.getAllByText('check.svg')[0])
+
+    expect(screen.getAllByText('check.svg').length).toBe(1)
+    expect(screen.queryByText('Jordan Walke')).toBeNull()
+  })
+
+  test('searches for specific stories', async() => {
+    const reactPromise = Promise.resolve({
+      data: {
+        hits: stories,
+      }
+    })
+
+    const anotherStory = {
+          title: 'JavaScript',
+          url: 'https://mdn.org/JavaScript',
+          author: 'Brenden Eich',
+          num_comments: 3,
+          points: 4,
+          objectID: 0,
+        }
+    const javaScriptPromise = {
+      data: {
+        hits: [anotherStory]
+      }
+    }
+
+    axios.get.mockImplementation(url => {
+      if(url.includes('React')) {
+        return reactPromise
+      }
+
+      if(url.includes('JavaScript')) {
+        return javaScriptPromise
+      }
+
+      throw Error()
+    })
+
+    // Initial Render
+    render (<App/>)
+
+    // First Data Fetching
+    await act(() => reactPromise)
+
+    expect(screen.queryByDisplayValue('React')).toBeInTheDocument()
+    expect(screen.queryByDisplayValue('JavaScript')).toBeNull()
+
+    expect(screen.queryByText('Jordan Walke')).toBeInTheDocument()
+    expect(screen.queryByText('Brenden Eich')).toBeNull()
+
+    // User interaction > Search
+    fireEvent.change(screen.queryByDisplayValue('React'), {
+      target: {
+        value: 'JavaScript'
+      }
+    })
+
+    expect(screen.queryByDisplayValue('React')).toBeNull()
+    expect(screen.queryByDisplayValue('JavaScript')).toBeInTheDocument()
+
+    fireEvent.submit(screen.queryByText('Submit'))
+    // Second Data Fetching
+    await act(() => javaScriptPromise)
+
+    expect(screen.queryByText('Jordan Walke')).toBeNull()
+    expect(screen.queryByText('Brenden Eich')).toBeInTheDocument()
   })
 })
