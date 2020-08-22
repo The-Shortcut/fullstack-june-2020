@@ -7,6 +7,7 @@ const UserController = require('./controllers/UserController')
 const app = express() // Setup server for app requiring express
 const PORT = process.env.PORT || 8000
 
+// Checking if in production or dev environment
 if(process.env.NODE_ENV != 'production') {
     require('dotenv').config()
 }
@@ -24,6 +25,7 @@ app.get('/register', (req, res)=> {
 
 app.post('/register', UserController.store)
 
+// Connecting to MongoDB by reading .env file if in dev environment
 try {
     mongoose.connect(process.env.MONGO_DB_CONNECTION, {
         useNewUrlParser: true,
