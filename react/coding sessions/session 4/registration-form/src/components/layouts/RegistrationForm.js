@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import InputField from '../customs/InputField'
-import { nameRex, emailRex, phoneRex } from '../constants/regExp'
+import { nameRex, emailRex, phoneRex, positionRex } from '../constants/regExp'
+import UserList from './UserList'
+import Notification from './Notification'
 
 export default class RegistrationForm extends Component {
     state={
@@ -18,6 +20,10 @@ export default class RegistrationForm extends Component {
         email:'',
         phone:'',
         position:''
+      },
+      notification:{
+          msg:'',
+          err: false
       }  
     }
 
@@ -39,6 +45,7 @@ export default class RegistrationForm extends Component {
                 formErrors.phone = (phone.match(phoneRex)) ? null : 'your phone number is invalid!'
                 break;
             case 'position':
+                formErrors.position = (position.match(positionRex)) ? null : 'you must input 7 to 25 characrters!' 
                 break;
             default:
                 break;
@@ -51,13 +58,90 @@ export default class RegistrationForm extends Component {
             formErrors: formErrors
         })
     }
+
+    handleSubmit = (e) => {
+        e.preventDefault()
+        let userValues = Object.values(this.state.user)
+        userValues.forEach( value => {
+            if(value === ''){
+                this.setState({
+                    notification:{
+                        msg: 'All fields are required!',
+                        err: true
+                    }
+                })
+            }
+            setTimeout(() => this.setState({
+                notification:{
+                    msg:'',
+                    err: false
+                }
+            }), 4000)
+        })
+
+        let errorValues = Object.values(this.state.formErrors)
+        errorValues.forEach( err => {
+            if(err !== ''){
+                this.setState({
+                    notification:{
+                        msg: 'Some fields get error!',
+                        err: true
+                    }
+                })
+            }
+            setTimeout(() => this.setState({
+                notification:{
+                    msg:'',
+                    err: false
+                }
+            }), 4000)
+        })
+
+        let allNullErrors = errorValues.filter( err => err === null)
+        if(allNullErrors.length === 5){
+            this.setState({
+                users: [...this.state.users, this.state.user],
+                notification:{
+                    msg:`${this.state.user.firstName} is registered!`,
+                    err:false
+                },
+                user:{
+                    firstName:'',
+                    lastName:'',
+                    email:'',
+                    phone:'',
+                    position:''
+                }
+            })
+        }
+
+        // this.setState({
+        //     user:{
+        //         firstName:'',
+        //         lastName:'',
+        //         email:'',
+        //         phone:'',
+        //         position:''
+        //     },
+        //     formErrors:{
+        //         firstName:'',
+        //         lastName:'',
+        //         email:'',
+        //         phone:'',
+        //         position:''
+        //       },
+        // })
+
+        
+    }
     render() {
-        console.log(this.state.user)
+        // console.log(this.state.users)
         const { firstName, lastName, email, phone, position} = this.state.user
         const {formErrors} = this.state
         return (
             <div>
-                <form style={styles.form}>
+                <Notification notification ={this.state.notification} />
+                <form onSubmit={this.handleSubmit} style={styles.form}>
                     <InputField
                      type="text"
                      value={firstName}
@@ -86,7 +170,7 @@ export default class RegistrationForm extends Component {
                      error={formErrors.email}
                     />
                     <InputField 
-                     type="number"
+                     type="text"
                      value={phone}
                      name="phone"
                      label="Phone: "
@@ -103,8 +187,9 @@ export default class RegistrationForm extends Component {
                      changeHandler={this.handleChange}
                      error={formErrors.position}
                     />
-                    <button style={styles.submitBtn}>submit</button>
+                    <button type="submit" style={styles.submitBtn}>submit</button>
                 </form>
+                <UserList users={this.state.users} />
             </div>
         )
     }
@@ -116,7 +201,8 @@ const styles ={
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
-        margin:'auto'
+        margin:'auto',
+        paddingTop:'3rem'
     },
     submitBtn:{
         minWidth:'120px',
