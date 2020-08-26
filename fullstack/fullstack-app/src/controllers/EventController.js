@@ -8,7 +8,7 @@ module.exports = {
     // Get the filename of thumbnail
     
     async createEvent(req, res) {
-        const { title, description, price } = req.body
+        const { title, description, price, category } = req.body
         const { user_id } = req.headers
         const { filename } = req.file
 
@@ -23,12 +23,26 @@ module.exports = {
         const event = await Event.create({
             title,
             description,
+            category,
             price: parseFloat(price),
             user: user_id,
             thumbnail: filename
         })
 
         return res.json(event)
+    },
+
+    async delete(req, res) {
+        const { eventId } = req.params
+        try {
+            await Event.findByIdAndDelete(eventId)
+            return res.status(204).send()
+        } catch(error) {
+            return res.status(400).json({
+                message: "We do not have any event with the ID"
+            })
+        }
     }
+
 }
 
