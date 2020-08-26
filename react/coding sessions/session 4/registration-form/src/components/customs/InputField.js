@@ -12,19 +12,24 @@ const InputField = ({type, label, placeHolder, value, name, changeHandler, error
                 name={name}
                 onChange={changeHandler} 
             />
-            <p style={{color:'darkRed'}}>{error}</p>
+            <small style={{color:'darkRed'}}>{error}</small>
         </div>
     )
 }
 
 const styles = {
     input:{
-        minWidth:'200px',
+        // minWidth:'200px',
         border:'none',
-        borderBottom: '2px solid darkgreen',
-        fontSize:'10px'
+        borderBottom: '1px solid darkgreen',
+        fontSize:'10px',
+        flex: 1,
+        outline:'none'
     },
     container:{
+        display:'flex',
+        flexDirection:'column',
+        minWidth:'40%',
         padding:'10px'
     }
 }
