@@ -14,17 +14,19 @@ const Notification = ({notification}) => {
 
 const styles = {
     error:{
-        color:'darkred',
+        color:'white',
+        backgroundColor:'darkred',
         border:'1px solid darkred',
-        borderRadius:'20px',
+        borderRadius:'5px',
         magin:'10px auto',
         padding:'10px',
         maxWidth:'400px',
     },
     success:{
-        color:'darkgreen',
+        color:'white',
+        backgroundColor:'darkgreen',
         border:'1px solid darkgreen',
-        borderRadius:'20px',
+        borderRadius:'5px',
         magin:'10px auto',
         padding:'10px',
         maxWidth:'400px',

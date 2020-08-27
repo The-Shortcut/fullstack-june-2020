@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { uuid } from 'uuidv4'
+import { storeData, getData } from '../../helpers/localStorage'
 import InputField from '../customs/InputField'
 import { nameRex, emailRex, phoneRex, positionRex } from '../constants/regExp'
 import UserList from './UserList'
@@ -6,7 +8,7 @@ import Notification from './Notification'
 
 export default class RegistrationForm extends Component {
     state={
-      users:[],
+      users: getData('userList') ? getData('userList') : [],
       user:{
           firstName:'',
           lastName:'',
@@ -26,6 +28,15 @@ export default class RegistrationForm extends Component {
           err: false
       }  
     }
+
+    componentDidUpdate(){
+        storeData('userList', this.state.users)
+    }
+    // componentDidMount(){
+    //     this.setState({
+    //         users: getData('userList')
+    //     })
+    // }
 
     handleChange =(e) =>{
         const { name, value} = e.target
@@ -50,9 +61,11 @@ export default class RegistrationForm extends Component {
             default:
                 break;
         }
+        // const idGen = () => Math.floor(Math.random()* 1000)
         this.setState({
             user:{
                 ...this.state.user,
+                id: uuid(),
                 [name]: value
             },
             formErrors: formErrors
@@ -71,12 +84,6 @@ export default class RegistrationForm extends Component {
                     }
                 })
             }
-            setTimeout(() => this.setState({
-                notification:{
-                    msg:'',
-                    err: false
-                }
-            }), 4000)
         })
 
         let errorValues = Object.values(this.state.formErrors)
@@ -89,16 +96,12 @@ export default class RegistrationForm extends Component {
                     }
                 })
             }
-            setTimeout(() => this.setState({
-                notification:{
-                    msg:'',
-                    err: false
-                }
-            }), 4000)
         })
 
         let allNullErrors = errorValues.filter( err => err === null)
-        if(allNullErrors.length === 5){
+        let filteredUser = this.state.users.filter( user => user.email === this.state.user.email)
+        console.log(filteredUser.length)
+        if(allNullErrors.length === 5 && filteredUser.length === 0){
             this.setState({
                 users: [...this.state.users, this.state.user],
                 notification:{
@@ -115,24 +118,20 @@ export default class RegistrationForm extends Component {
             })
         }
 
-        // this.setState({
-        //     user:{
-        //         firstName:'',
-        //         lastName:'',
-        //         email:'',
-        //         phone:'',
-        //         position:''
-        //     },
-        //     formErrors:{
-        //         firstName:'',
-        //         lastName:'',
-        //         email:'',
-        //         phone:'',
-        //         position:''
-        //       },
-        // })
-
-        
+        if(filteredUser.length > 0){
+            this.setState({
+                notification:{
+                    msg: `${this.state.user.firstName} is already registred!!`,
+                    err: true
+                }
+            })
+        }
+        setTimeout(() => this.setState({
+            notification:{
+                msg:'',
+                err: false
+            }
+        }), 4000)
     }
     render() {
         // console.log(this.state.users)
