@@ -7,6 +7,9 @@ const UserController = require('./controllers/UserController')
 const EventController = require('./controllers/EventController')
 const DashboardController = require('./controllers/DashboardController')
 const LoginController = require('./controllers/LoginController')
+const RegistrationController = require('./controllers/RegistrationController')
+const ApprovalController = require('./controllers/ApprovalController')
+const RejectionController = require('./controllers/RejectionController')
 const uploadConfig = require('./config/upload')
 
 // Creating instances
@@ -44,8 +47,13 @@ routes.get('/dashboard/:category', DashboardController.getAllEvents)
 // Login
 routes.post('/login', LoginController.store)
 
-// TODO: LoginController
-// TODO: SubscribeController
+// Registration
+routes.post('/registration/:eventId', RegistrationController.createRegistration )
+routes.get('/registration/:registrationId', RegistrationController.getRegistration)
+// Approvals and Rejections
+routes.post('/registration/:registrationId/approvals', ApprovalController.approval)
+routes.post('/registration/:registrationId/rejections', RejectionController.rejection)
+
 // TODO: ApprovalController
 // TODO: RejectionController
 
