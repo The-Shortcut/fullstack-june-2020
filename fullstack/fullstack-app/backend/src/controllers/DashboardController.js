@@ -20,7 +20,7 @@ module.exports = {
 
     async getAllEvents(req, res) {
         const { category } = req.params
-        const query = { category } || {}
+        const query = category ? { category } : {}
 
         try {
             const events = await Event.find(query)

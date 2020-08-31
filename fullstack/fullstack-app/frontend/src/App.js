@@ -1,5 +1,4 @@
 import React from 'react';
-import Login from './pages/Dashboard'
 import { Container } from 'reactstrap'
 import Routes from './routes'
 import './App.css';

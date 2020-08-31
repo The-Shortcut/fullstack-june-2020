@@ -1,0 +1,19 @@
+label#thumbnail {
+    border: 1px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25vh;
+    max-width: 10vw;
+}
+
+label#thumbnail input {
+    display: none;
+}
+
+label#thumbnail.has-thumbnail img {
+    display: none;
+}
