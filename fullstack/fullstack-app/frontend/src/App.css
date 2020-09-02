@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+
+html, 
+body,
+#root {
+    max-width: 100%;
+    background-color: #50585f;
+}
+
+::placeholder {
+    font-size: 0.9em;
+}
+
+.container {
+    margin: 2% auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container h1 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.container p {
+    color: white;
+    font-size: 1rem;
+}
+
+.container input {
+    width: 100%;
+}
+
+.container label {
+    color: white;
+    font-size: 1em;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    background-color: #7584a1;
+    margin-top: 5%;
+    border-radius: 0.5em;
+    padding: 5%;
+}
+
+.content h2 {
+    color: white;
+    font-weight: 700;
+}
+
+.content > p {
+    font-size: 1rem;
+    color: white;
+}
+
+.content button {
+    border:0;
+    font-size: 1em;
+    font-weight: 700;
+    height: 2.5em;
+    width: 100%;
+}
+
+.content button.submit-btn {
+    background-color: #5568a3;
+}
+
+.content button.submit-btn:hover {
+    background-color: #34416b;
+}
+
+.content button.secondary-btn {
+    background-color: #af5b3a;
+}
+
+.content button.secondary-btn:hover {
+    background-color: #754431;
+}
+
+.container > .event-validation {
+    padding: 1em 2em;
+    text-align: center;
+    position: absolute;
+    top: 60%;
+}

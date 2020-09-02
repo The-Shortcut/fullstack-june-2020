@@ -6,7 +6,11 @@ import thumbnailIcon from '../../assets/thumbnail.png'
 import './events.css'
 import api from '../../services/api'
 
-const EventsPage =() => {
+// TODO
+// Add button to navigate to dashboard
+// Create successful event creation message
+
+const EventsPage =({history}) => {
     // console.log(user_id)
     
     // Declare state variables
@@ -17,6 +21,7 @@ const EventsPage =() => {
     const [thumbnail, setThumbnail] = useState(null)
     const [date, setDate] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    const [success, setSuccess] = useState(false)
     
     const preview = useMemo(() => {
         return thumbnail ? URL.createObjectURL(thumbnail) : null
@@ -46,6 +51,10 @@ const EventsPage =() => {
                     await api.post('/event', eventData, {headers: {user_id}})
                     console.log(eventData)
                     console.log("Event has been saved")
+                    setSuccess(true)
+                    setTimeout(() => {
+                        setSuccess(false)
+                    }, 2000);
                 } else {
                     setErrorMessage(true)
                     setTimeout(() => {
@@ -58,7 +67,6 @@ const EventsPage =() => {
         } catch(error) {
             Promise.reject(error)
             console.log(error)
-
         }
 
         }
@@ -94,14 +102,22 @@ const EventsPage =() => {
                     <Label> Date: </Label>
                     <Input id="date" type="date" placeholder={'Set Event Date'} onChange={event => setDate(event.target.value)} />
                 </FormGroup>
-                <Button type="submit">
-                    Create Event
-                </Button>
+                <FormGroup>
+                    <Button type="submit" className="submit-btn">
+                        Create Event
+                    </Button>
+                </FormGroup>
+                <FormGroup>
+                    <Button type="submit" className="secondary-btn" onClick={()=>history.push('/dashboard')}>
+                        Dashboard
+                    </Button>
+                </FormGroup>
             </Form>
             {errorMessage ? (
-                <Alert>
-                    Missing required Information
-                </Alert>
+                <Alert color="danger" className="event-validation">Missing input</Alert>
+            ) : ''}
+            {success ? (
+                <Alert color="success" className="event-validation">Event created successfully</Alert>
             ) : ''}
         </Container>
     )

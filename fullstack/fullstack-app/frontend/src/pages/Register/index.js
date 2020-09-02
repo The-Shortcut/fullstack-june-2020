@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, FormGroup, Label, Input, Container } from 'reactstrap'
+import { Alert, Button, Form, FormGroup, Label, Input, Container } from 'reactstrap'
 
 import api from '../../services/api'
 
@@ -8,20 +8,46 @@ const Register = ({history}) => {
     const [password, setPassword] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
+    const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     const handleSubmit = async event => {
         event.preventDefault()
-        console.log('result of the submit', email, password)
 
-        const response = await api.post('/user/register', {email, password, firstName, lastName})
-        const userId = response.data._id || false
+        try {
+            if ( email !== '' &&
+            password !== '' &&
+            firstName !== '' &&
+            lastName !== ''
+            ) {
+                const response = await api.post('/user/register', {email, password, firstName, lastName})
+                const userId = response.data._id || false
+    
+            if (userId) {
+                localStorage.setItem('user', userId)
+                history.push('/dashboard')
+            } else {
+                const { message } = response.data
+                console.log(message)
+                setError(true)
+                setErrorMessage(message)
 
-        if (userId) {
-            localStorage.setItem('user', userId)
-            history.push('/dashboard')
-        } else {
-            const { message } = response.data
-            console.log(message)
+                setTimeout(() => {
+                    setError(false)
+                    setErrorMessage('')
+                }, 2000);
+            }
+            } else {
+                setError(true)
+                setErrorMessage("Inputs missing")
+    
+                setTimeout(() => {
+                    setError(false)
+                    setErrorMessage('')
+                }, 2000);
+            }
+        } catch(error) {
+            Promise.reject(error)
         }
     }
 
@@ -42,8 +68,16 @@ const Register = ({history}) => {
                 <FormGroup>
                 <Input type="password" name="password" id="examplePassword" placeholder="Your Password" onChange={event => setPassword(event.target.value)} />
                 </FormGroup>
-                <Button>Submit</Button>
+                <FormGroup>
+                    <Button className="submit-btn">Register</Button>
+                </FormGroup>
+                <FormGroup>
+                    <Button className="secondary-btn" onClick={() => history.push('/login')}>Already have an account?</Button>
+                </FormGroup>  
             </Form>
+            {error ? (
+                <Alert color="danger" className="event-validation">{errorMessage}</Alert>
+            ) : ''}
         </Container>
     )
 }

@@ -4,10 +4,8 @@ label#thumbnail {
     background-repeat: no-repeat;
     cursor: pointer;
     display: flex;
-    justify-content: center;
     align-items: center;
     height: 25vh;
-    max-width: 10vw;
 }
 
 label#thumbnail input {

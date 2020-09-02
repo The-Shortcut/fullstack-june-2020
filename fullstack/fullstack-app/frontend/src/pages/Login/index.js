@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { Button, Form, FormGroup, Label, Input, Container } from 'reactstrap'
+import { Alert, Button, Form, FormGroup, Label, Input, Container } from 'reactstrap'
 
 import api from '../../services/api'
 
 const Login = ({history}) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
 
     const handleSubmit = async event => {
@@ -15,18 +17,31 @@ const Login = ({history}) => {
         const response = await api.post('/login', {email, password})
         const userId = response.data._id || false
 
-        if (userId) {
-            localStorage.setItem('user', userId)
-            history.push('/dashboard')
-        } else {
-            const { message } = response.data
-            console.log(message)
+        try {
+            if (userId) {
+                localStorage.setItem('user', userId)
+                history.push('/dashboard')
+            } else {
+                const { message } = response.data
+                setError(true)
+                setErrorMessage(message)
+                console.log(message)
+
+                setTimeout(() => {
+                    setError(false)
+                    setErrorMessage('')
+                }, 2000)
+            }
+        } catch(error) {
+            setError(true)
+            setErrorMessage(`Error, the server returned an error`)
         }
+
     }
 
     return (
         <Container>
-            <h2> Login: </h2>
+            <h2> Login </h2>
             <p>Login to your account to the events</p>
             <Form onSubmit={handleSubmit}>
                 <FormGroup>
@@ -35,8 +50,16 @@ const Login = ({history}) => {
                 <FormGroup>
                 <Input type="password" name="password" id="examplePassword" placeholder="Your Password" onChange={event => setPassword(event.target.value)} />
                 </FormGroup>
-                <Button>Submit</Button>
+                <FormGroup>
+                    <Button className="submit-btn">Login</Button>
+                </FormGroup>
+                <FormGroup>
+                    <Button className="secondary-btn" onClick={() => history.push('/register')}>Register</Button>
+                </FormGroup>
             </Form>
+            {error ? (
+                <Alert color="danger" className="event-validation">{errorMessage}</Alert>
+            ) : ''}
         </Container>
     )
 }
