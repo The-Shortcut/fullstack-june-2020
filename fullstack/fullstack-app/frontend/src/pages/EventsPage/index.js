@@ -87,8 +87,14 @@ const EventsPage =({history}) => {
                     <Input id="title" type="text" placeholder={'Set Event Title'} onChange={event => setTitle(event.target.value)} />
                 </FormGroup>
                 <FormGroup>
-                    <Label> Category: </Label>
-                    <Input id="category" type="text" placeholder={'Set Event Category'} onChange={event => setCategory(event.target.value)} />
+                    <Label>Select Category</Label>
+                    <Input type="select" id="category" value={category} onChange={(event) => setCategory(event.target.value)}>
+                        <option value="" disabled>Select Category</option>
+                        <option value="running">Running</option>
+                        <option value="climbing">Climbing</option>
+                        <option value="exercise">Exercise</option>
+                        <option value="other">Other</option>
+                    </Input>
                 </FormGroup>
                 <FormGroup>
                     <Label> Description: </Label>
@@ -108,7 +114,7 @@ const EventsPage =({history}) => {
                     </Button>
                 </FormGroup>
                 <FormGroup>
-                    <Button type="submit" className="secondary-btn" onClick={()=>history.push('/dashboard')}>
+                    <Button type="submit" className="secondary-btn" onClick={()=>history.push('/')}>
                         Dashboard
                     </Button>
                 </FormGroup>

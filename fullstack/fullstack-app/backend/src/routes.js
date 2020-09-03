@@ -33,12 +33,14 @@ routes.delete('/event/:eventId', EventController.delete)
 // User
 // Registering 
 routes.post('/user/register', UserController.createUser)
+// Getting events by user ID
+routes.get('/user/events', DashboardController.getEventsByUserId)
 // Getting user By ID
 routes.get('/user/:userId', UserController.getUserById)
 
 // Dashboard
 // Getting events with ID using function called getEventById from EventController
-routes.get('/dashboard/:eventId', DashboardController.getEventById)
+routes.get('/event/:eventId', DashboardController.getEventById)
 // Getting all events
 routes.get('/dashboard', DashboardController.getAllEvents)
 // Getting events by category
