@@ -6,7 +6,8 @@ import './dashboard.css'
 import { Alert, Button, ButtonGroup } from 'reactstrap'
 
 const Dashboard = ({history}) => {
-    const user_id = localStorage.getItem('user')
+    const user_id = localStorage.getItem('user_id')
+    const user = localStorage.getItem('user')
 
     const [events, setEvents] = useState([])
     const [error, setError] = useState(false)
@@ -21,13 +22,17 @@ const Dashboard = ({history}) => {
     }
 
     const myEventsHandler = async () => {
-        const response = await api.get('/user/events', { headers: {user_id}})
-        setEvents(response.data)
+        try {
+            const response = await api.get('/user/events', { headers: {user}})
+            setEvents(response.data)
+        } catch(error) {
+            history.push('login')
+        }
     }
 
     const deleteEventHandler = async (eventId) => {
         try {
-            await api.delete(`/event/${eventId}`)
+            await api.delete(`/event/${eventId}`, {headers: {user}})
             setSuccess(true)
             setTimeout(() => {
                 setSuccess(false)
@@ -42,11 +47,17 @@ const Dashboard = ({history}) => {
     }
 
     const getEvents = async(params) => {
-        const url = params ? `/dashboard/${params}` : '/dashboard'
-        const response = await api.get(url, {headers: {user_id}})
-
-        setEvents(response.data)
+        try {
+            const url = params ? `/dashboard/${params}` : '/dashboard'
+            const response = await api.get(url, {headers: {user}})
+    
+            console.log(response.data)
+            setEvents(response.data.events)
+        } catch {
+            history.push('login')
+        }
     }
+
     return (
         <>
             <div className="filter-panel">

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Alert, Button, Form, FormGroup, Label, Input, Container } from 'reactstrap'
 
 import thumbnailIcon from '../../assets/thumbnail.png'
@@ -23,13 +23,17 @@ const EventsPage =({history}) => {
     const [errorMessage, setErrorMessage] = useState('')
     const [success, setSuccess] = useState(false)
     
+    const user = localStorage.getItem('user')
+    useEffect(() => {
+        if(!user) history.push('login')
+    })
+    
     const preview = useMemo(() => {
         return thumbnail ? URL.createObjectURL(thumbnail) : null
     }, [thumbnail])
     
     const submitHandler = async (event) => {
         event.preventDefault()
-        const user_id = localStorage.getItem('user')
         const eventData = new FormData()
 
         eventData.append("thumbnail", thumbnail)
@@ -48,7 +52,7 @@ const EventsPage =({history}) => {
                 thumbnail !== null
                 ) {
                     console.log("Event has been sent")
-                    await api.post('/event', eventData, {headers: {user_id}})
+                    await api.post('/event', eventData, {headers: {user}})
                     console.log(eventData)
                     console.log("Event has been saved")
                     setSuccess(true)

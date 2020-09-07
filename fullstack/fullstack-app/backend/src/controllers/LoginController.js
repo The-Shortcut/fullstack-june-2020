@@ -1,5 +1,6 @@
 // Import required packages and models
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const User = require('../models/User')
 
@@ -35,8 +36,14 @@ module.exports = {
                     email: user.email,
                     firstName: user.firstName,
                     lastName: user.lastName
-                }
-                return res.json(userResponse)
+                } 
+                return jwt.sign( {user: userResponse}, 'secret', (err, token) => {
+                    return res.json({
+                        user: token,
+                        user_id: userResponse._id
+                    })
+                })
+
             } else {
                 return res.status(200).json({
                     message: "Email or password does not match"

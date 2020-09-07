@@ -15,11 +15,14 @@ const Login = ({history}) => {
         console.log('result of the submit', email, password)
 
         const response = await api.post('/login', {email, password})
-        const userId = response.data._id || false
+        // const userId = response.data._id || false
+        const user = response.data.user || false
+        const user_id = response.data.user_id || false
 
         try {
-            if (userId) {
-                localStorage.setItem('user', userId)
+            if (user && user_id) {
+                localStorage.setItem('user', user)
+                localStorage.setItem('user_id', user_id)
                 history.push('/')
             } else {
                 const { message } = response.data

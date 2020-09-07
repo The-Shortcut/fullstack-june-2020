@@ -3,6 +3,7 @@ const express = require('express')
 const multer = require('multer')
 
 // Import controllers and config files
+const verifyToken = require('./config/verifyToken')
 const UserController = require('./controllers/UserController')
 const EventController = require('./controllers/EventController')
 const DashboardController = require('./controllers/DashboardController')
@@ -26,25 +27,25 @@ routes.get('/status', (req, res)=> {
 
 // Event
 // Event creation end point
-routes.post('/event', upload.single("thumbnail") ,EventController.createEvent)
+routes.post('/event', verifyToken, upload.single("thumbnail") ,EventController.createEvent)
 // Deleting event by ID
-routes.delete('/event/:eventId', EventController.delete)
+routes.delete('/event/:eventId', verifyToken, EventController.delete)
 
 // User
 // Registering 
 routes.post('/user/register', UserController.createUser)
 // Getting events by user ID
-routes.get('/user/events', DashboardController.getEventsByUserId)
+routes.get('/user/events', verifyToken, DashboardController.getEventsByUserId)
 // Getting user By ID
 routes.get('/user/:userId', UserController.getUserById)
 
 // Dashboard
 // Getting events with ID using function called getEventById from EventController
-routes.get('/event/:eventId', DashboardController.getEventById)
+routes.get('/event/:eventId', verifyToken, DashboardController.getEventById)
 // Getting all events
-routes.get('/dashboard', DashboardController.getAllEvents)
+routes.get('/dashboard', verifyToken, DashboardController.getAllEvents)
 // Getting events by category
-routes.get('/dashboard/:category', DashboardController.getAllEvents)
+routes.get('/dashboard/:category', verifyToken, DashboardController.getAllEvents)
 
 // Login
 routes.post('/login', LoginController.store)
@@ -56,8 +57,12 @@ routes.get('/registration/:registrationId', RegistrationController.getRegistrati
 routes.post('/registration/:registrationId/approvals', ApprovalController.approval)
 routes.post('/registration/:registrationId/rejections', RejectionController.rejection)
 
-// TODO: ApprovalController
-// TODO: RejectionController
+// TODO: Add JWT token to project (DONE)
+// Return token when login (DONE)
+// Send token on request (DONE)
+// Create function to protect routes (DONE)
+// Add function/middleware to routers
+// Modify response to decode the token
 
 
 // Export routes
