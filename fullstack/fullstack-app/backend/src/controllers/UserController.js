@@ -1,6 +1,7 @@
 // Importing required libraries and packages
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
     async createUser(req, res) {
@@ -11,17 +12,17 @@ module.exports = {
             if(!existentUser) {
                 // Has encrypt password before creating user
                 const hashedPassword = await bcrypt.hash(password, 10)
-                const user = await User.create({
+                const userResponse = await User.create({
                     firstName,
                     lastName,
                     email,
                     password: hashedPassword
                 })
-                return res.json({
-                    _id: user._id,
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName
+                return jwt.sign( {user: userResponse}, 'secret', (err, token) => {
+                    return res.json({
+                        user: token,
+                        user_id: userResponse._id
+                    })
                 })
             }
             return res.status(400).json({

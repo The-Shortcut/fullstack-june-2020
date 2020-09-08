@@ -51,7 +51,7 @@ routes.get('/dashboard/:category', verifyToken, DashboardController.getAllEvents
 routes.post('/login', LoginController.store)
 
 // Registration
-routes.post('/registration/:eventId', RegistrationController.createRegistration )
+routes.post('/registration/:eventId', verifyToken, RegistrationController.createRegistration )
 routes.get('/registration/:registrationId', RegistrationController.getRegistration)
 // Approvals and Rejections
 routes.post('/registration/:registrationId/approvals', ApprovalController.approval)
