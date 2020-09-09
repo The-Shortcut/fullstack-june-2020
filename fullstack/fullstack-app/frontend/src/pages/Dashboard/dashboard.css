@@ -37,6 +37,11 @@ div.filter-panel button {
     width: auto;
 }
 
+ul.notifications {
+    padding: inherit;
+    list-style: none;
+}
+
 @media (max-width:768px) {
     ul.events-list {
         grid-template-columns: 1fr;

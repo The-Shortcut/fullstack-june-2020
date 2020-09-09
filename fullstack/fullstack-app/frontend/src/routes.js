@@ -5,10 +5,12 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import EventsPage from './pages/EventsPage'
+import TopNav from './components/TopNav'
 
 export default Routes => {
     return (
         <BrowserRouter>
+            <TopNav />
             <Switch>
                 <Route path='/' exact component={Dashboard} />
                 <Route path='/register' exact component={Register} />
