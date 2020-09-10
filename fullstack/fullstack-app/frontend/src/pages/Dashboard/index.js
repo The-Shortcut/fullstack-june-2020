@@ -16,6 +16,8 @@ const Dashboard = ({history}) => {
     const [messageHandler, setMessageHandler] = useState('')
     const [eventsRequests, setEventsRequests] = useState([])
     const [dropdownOpen, setdropDownOpen] = useState(false)
+    const [eventRequestMessage, setEventRequestMessage] = useState('')
+    const [eventRequestSuccess, setEventRequestSuccess] = useState(false)
 
     const toggle = () => setdropDownOpen(!dropdownOpen)
 
@@ -99,6 +101,42 @@ const Dashboard = ({history}) => {
         }
     }
 
+    const acceptEventHandler = async(eventId) => {
+        try {
+            await api.post(`/registration/${eventId}/approvals`, {}, {headers: {user}})
+            setEventRequestSuccess(true)
+            setEventRequestMessage(`Request approved successfully`)
+            removeNotificationFromDashboard(eventId)
+            console.log('Registered')
+            setTimeout(() => {
+                setEventRequestSuccess(false)
+                setEventRequestMessage('')
+            }, 2000);
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    const rejectEventHandler = async(eventId) => {
+        try {
+            await api.post(`/registration/${eventId}/rejections`, {}, {headers: {user}})
+            setEventRequestSuccess(true)
+            setEventRequestMessage(`Request rejected successfully`)
+            removeNotificationFromDashboard(eventId)
+            setTimeout(() => {
+                setEventRequestSuccess(false)
+                setEventRequestMessage('')
+            }, 2000);
+        } catch(error) {
+            console.log(error)
+        }
+    }
+
+    const removeNotificationFromDashboard = (eventId) => {
+        const newEvents = eventsRequests.filter((event) => event._id !== eventId) 
+        setEventsRequests(newEvents)
+    }
+
     // TODO: Add logout button next to Create Event
     // TODO: Onclick it should trigger logoutHandler function
     // TODO: logoutHandler function will kick users out of the session
@@ -106,17 +144,20 @@ const Dashboard = ({history}) => {
 
     return (
         <>
+            {eventRequestSuccess ? (
+                <Alert color="success" className="event-validation"> {eventRequestMessage} </Alert>
+            ) : ''}
             <ul className="notifications">
                 {eventsRequests.map(request => {
                     console.log(request)
                     return (
-                        <li key={request.id}>
+                        <li key={request._id}>
                             <div>
                                 <strong>{request.user.email}</strong> is requesting to register to your event: <strong>{request.event.title}</strong>
                             </div>
                             <ButtonGroup>
-                                <Button color="secondary" onClick={() => {}}>Accept</Button>
-                                <Button color="danger" onClick={() => {}}>Reject</Button>
+                                <Button color="secondary" onClick={() => { acceptEventHandler(request._id) }}>Accept</Button>
+                                <Button color="danger" onClick={() => { rejectEventHandler(request._id) }}>Reject</Button>
                             </ButtonGroup>
                         </li>
                     )

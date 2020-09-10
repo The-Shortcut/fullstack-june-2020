@@ -26,6 +26,9 @@ const logoutHandler = () => {
               <Link to="/events">Create Event</Link>
             </NavItem>
             <NavItem>
+              <Link to="/myregistrations">Registration Requests</Link>
+            </NavItem>
+            <NavItem>
               <Link to="/">Dashboard</Link>
             </NavItem>
             <NavItem>

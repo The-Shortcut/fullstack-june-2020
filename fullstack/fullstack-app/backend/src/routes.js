@@ -52,10 +52,11 @@ routes.post('/login', LoginController.store)
 
 // Registration
 routes.post('/registration/:eventId', verifyToken, RegistrationController.createRegistration )
+routes.get('/registration', verifyToken, RegistrationController.getMyRegistrations)
 routes.get('/registration/:registrationId', RegistrationController.getRegistration)
 // Approvals and Rejections
-routes.post('/registration/:registrationId/approvals', ApprovalController.approval)
-routes.post('/registration/:registrationId/rejections', RejectionController.rejection)
+routes.post('/registration/:registrationId/approvals', verifyToken, ApprovalController.approval)
+routes.post('/registration/:registrationId/rejections', verifyToken, RejectionController.rejection)
 
 // TODO: Add JWT token to project (DONE)
 // Return token when login (DONE)
