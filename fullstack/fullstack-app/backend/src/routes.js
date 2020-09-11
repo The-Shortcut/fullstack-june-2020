@@ -11,13 +11,15 @@ const LoginController = require('./controllers/LoginController')
 const RegistrationController = require('./controllers/RegistrationController')
 const ApprovalController = require('./controllers/ApprovalController')
 const RejectionController = require('./controllers/RejectionController')
-const uploadConfig = require('./config/upload')
+// const uploadConfig = require('./config/upload')
+const uploadToS3 = require('./config/s3Upload')
 
 // Creating instances
 // Define middleware which allows us to route from different file
 const routes = express.Router()
 // Multer instance of our upload config to use functionality
-const upload = multer(uploadConfig)
+// const upload = multer(uploadConfig)
+// const uploadToS3
 
 // Define routes using express' Router method
 // Checking if app is running fine
@@ -27,7 +29,7 @@ routes.get('/status', (req, res)=> {
 
 // Event
 // Event creation end point
-routes.post('/event', verifyToken, upload.single("thumbnail") ,EventController.createEvent)
+routes.post('/event', verifyToken, uploadToS3.single("thumbnail") ,EventController.createEvent)
 // Deleting event by ID
 routes.delete('/event/:eventId', verifyToken, EventController.delete)
 
